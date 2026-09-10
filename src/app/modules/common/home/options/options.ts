@@ -64,8 +64,8 @@ export class Options {
     },
     {
       icon: ['fas', 'credit-card'],
-      title: 'Medios de pago',
-      description: 'Gestiona y configura tus métodos de pago.',
+      title: 'Promociones y Cupones',
+      description: 'Gestiona y configura las promociones y cupones para tus clientes.',
       link: '/payment-methods',
       color: 'text-yellow-700'
     },

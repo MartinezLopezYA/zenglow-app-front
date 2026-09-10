@@ -1,10 +1,167 @@
-<div class="flex flex-col gap-4">
+<!-- TODO Configuración landing page (slug, ruta qr) -->
 
-  <div class="bg-surface rounded-2xl border border-stroke shadow-sm overflow-hidden">
+
+
+<div class="flex flex-col gap-4 h-full overflow-sections">
+  <div class="bg-surface rounded-2xl border border-stroke shadow-sm">
+    <div class="px-5 py-4 border-b border-stroke/60">
+      <h2 class="text-sm font-semibold text-muted">Agendamiento</h2>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <fa-icon [icon]="['fas', 'calendar-day']" class="text-base text-primary"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Agendar por Página</p>
+          <p class="text-xs text-muted">
+            {{ commerceConfig()?.commerceappointmentschedulepage ? 'Activado' : 'Desactivado' }} — Permite que tus clientes agenden sus citas.
+          </p>
+        </div>
+      </div>
+      <button type="button" role="switch" [attr.aria-checked]="commerceConfig()?.commerceappointmentschedulepage" (click)="toggleScheduleByPage()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="commerceConfig()?.commerceappointmentschedulepage" [class.bg-stroke]="!commerceConfig()?.commerceappointmentschedulepage">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="commerceConfig()?.commerceappointmentschedulepage" [class.translate-x-1]="!commerceConfig()?.commerceappointmentschedulepage">
+        </span>
+      </button>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4 border-t border-stroke/60">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <fa-icon [icon]="['fas', 'check-double']" class="text-base text-primary"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Confirmación automática</p>
+          <p class="text-xs text-muted">
+            {{ commerceConfig()?.commerceappointmentapproveschedule ? 'Activado' : 'Desactivado' }} — Las agendas se quedaran confirmadas automáticamente.
+          </p>
+        </div>
+      </div>
+      <button type="button" role="switch" [attr.aria-checked]="commerceConfig()?.commerceappointmentapproveschedule" (click)="toggleScheduleApproved()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="commerceConfig()?.commerceappointmentapproveschedule" [class.bg-stroke]="!commerceConfig()?.commerceappointmentapproveschedule">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="commerceConfig()?.commerceappointmentapproveschedule" [class.translate-x-1]="!commerceConfig()?.commerceappointmentapproveschedule">
+        </span>
+      </button>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4 border-t border-stroke/60">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <fa-icon [icon]="['fas', 'link']" class="text-base text-primary"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Link de la página</p>
+          <p class="text-xs text-muted">
+            Copia el link de tu página de agendamiento para compartirlo con tus clientes.
+          </p>
+          <p class="text-xs text-primary font-semibold">
+            {{ commerceConfig()?.commercelandingurl || urlFront + '/landing-page/' + slug() }}
+          </p>
+        </div>
+      </div>
+      <button type="button" (click)="copyToClipboard()" class="flex items-center justify-center min-w-10 h-10 rounded-xl bg-primary/10 shrink-0 cursor-pointer hover:bg-primary/20 transition-all duration-200" [ngClass]="{ 'bg-primary/20 px-4': urlcopied() }">
+        <span class="text-sm font-medium text-primary">{{ urlcopied() ? 'Copiado!' : '' }}</span>
+        <fa-icon [icon]="['fas', 'copy']" class="text-base text-primary"></fa-icon>
+      </button>
+    </div>
+  </div>
+  <div class="bg-surface rounded-2xl border border-stroke shadow-sm">
+    <div class="px-5 py-4 border-b border-stroke/60">
+      <h2 class="text-sm font-semibold text-muted">Propina y Domicilio</h2>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <fa-icon [icon]="['fas', 'circle-dollar-to-slot']" class="text-base text-primary"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Propina</p>
+          <p class="text-xs text-muted">
+            {{ commerceConfig()?.commercetips ? 'Activado' : 'Desactivado' }} — Permite recibir propina de tus lientes.
+          </p>
+        </div>
+      </div>
+      <button type="button" role="switch" [attr.aria-checked]="commerceConfig()?.commercetips" (click)="toggleTips()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="commerceConfig()?.commercetips" [class.bg-stroke]="!commerceConfig()?.commercetips">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="commerceConfig()?.commercetips" [class.translate-x-1]="!commerceConfig()?.commercetips">
+        </span>
+      </button>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4 border-t border-stroke/60">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <fa-icon [icon]="['fas', 'building-circle-arrow-right']" class="text-base text-primary"></fa-icon>
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Domicilio</p>
+          <p class="text-xs text-muted">
+            {{ commerceConfig()?.commercedeliveryfee ? 'Activado' : 'Desactivado' }} — Permite realizar servicios y agendar citas a domicilio para tus clientes.
+          </p>
+        </div>
+      </div>
+      <button type="button" role="switch" [attr.aria-checked]="commerceConfig()?.commercedeliveryfee" (click)="toggleDeliveryFee()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="commerceConfig()?.commercedeliveryfee" [class.bg-stroke]="!commerceConfig()?.commercedeliveryfee">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="commerceConfig()?.commercedeliveryfee" [class.translate-x-1]="!commerceConfig()?.commercedeliveryfee">
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="bg-surface rounded-2xl border border-stroke shadow-sm">
+    <div class="px-5 py-4 border-b border-stroke/60">
+      <h2 class="text-sm font-semibold text-muted">Pasarelas de Pago</h2>
+    </div>
+    <div class="flex items-center justify-between gap-4 px-5 py-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
+          <img src="../../../../images/wompi.webp" alt="Logo De Wompi" class="w-6 h-auto rounded-lg">
+        </div>
+        <div class="min-w-0">
+          <p class="text-sm font-semibold text-heading">Wompi</p>
+          <p class="text-xs text-muted">
+            {{ commerceConfig()?.commercewompi ? 'Activado' : 'Desactivado' }} — Recibe pagos a traves de tu cuenta wompi.
+          </p>
+        </div>
+      </div>
+      <button type="button" role="switch" [attr.aria-checked]="commerceConfig()?.commercewompi" (click)="activePasarelaToggle()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="commerceConfig()?.commercewompi" [class.bg-stroke]="!commerceConfig()?.commercewompi">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="commerceConfig()?.commercewompi" [class.translate-x-1]="!commerceConfig()?.commercewompi">
+        </span>
+      </button>
+    </div>
+    @if (activePasarela()) {
+      <div class="px-5 py-4">
+        <div class="w-full flex justify-between">
+          <div class="flex flex-col">
+            <p class="text-sm font-semibold text-heading mb-1">Configuración de Wompi</p>
+            <p class="text-xs text-muted mb-3">Configura tu cuenta de Wompi para recibir pagos.</p>
+          </div>
+          @if (showForm()) {
+            <button type="button" (click)="showFormToggle()" class="flex items-center justify-center min-w-10 h-10 rounded-xl bg-primary/10 shrink-0 cursor-pointer hover:bg-primary/20 transition-all duration-200">
+              <fa-icon [icon]="['fas', 'xmark']" class="text-base text-primary"></fa-icon>
+            </button>
+          } @else {
+            <button type="button" (click)="showFormToggle()" class="flex items-center justify-center min-w-10 h-10 rounded-xl bg-primary/10 shrink-0 cursor-pointer hover:bg-primary/20 transition-all duration-200">
+              <fa-icon [icon]="['fas', 'pen']" class="text-base text-primary"></fa-icon>
+            </button>
+          }
+        </div>
+        @if (showForm()) {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <ui-input-component id="publickey" type="text" formControlName="publickey" label="Public Key" placeholder="Ingresa tu Public Key"></ui-input-component>
+              <ui-input-component id="privatekey" type="text" formControlName="privatekey" label="Private Key" placeholder="Ingresa tu Private Key"></ui-input-component>
+              <ui-input-component id="webhooksecret" type="text" formControlName="webhooksecret" label="Webhook Secret" placeholder="Ingresa tu Webhook Secret"></ui-input-component>
+              <ui-dropdown-component id="environment" formControlName="environment" label="Environment" [options]="envoptions"></ui-dropdown-component>
+            </div>
+            <div class="w-full flex justify-end">
+              <button type="submit" [disabled]="form.invalid" class="mt-4 px-4 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors duration-200 disabled:opacity *:-50 disabled:cursor-not-allowed">
+                <fa-icon [icon]="['fas', 'save']" class="mr-2"></fa-icon>
+                Guardar Configuración
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    }
+  </div>
+  <div class="bg-surface rounded-2xl border border-stroke shadow-sm">
     <div class="px-5 py-4 border-b border-stroke/60">
       <h2 class="text-sm font-semibold text-muted">Apariencia</h2>
     </div>
-
     <div class="flex items-center justify-between gap-4 px-5 py-4 border-b border-stroke/60">
       <div class="flex items-center gap-3 min-w-0">
         <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary-subtle shrink-0">
@@ -17,34 +174,17 @@
           </p>
         </div>
       </div>
-
-      <button
-        type="button"
-        role="switch"
-        [attr.aria-checked]="themeService.mode() === 'dark'"
-        (click)="toggleTheme()"
-        class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer"
-        [class.bg-primary]="themeService.mode() === 'dark'"
-        [class.bg-stroke]="themeService.mode() !== 'dark'">
-        <span
-          class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200"
-          [class.translate-x-6]="themeService.mode() === 'dark'"
-          [class.translate-x-1]="themeService.mode() !== 'dark'">
+      <button type="button" role="switch" [attr.aria-checked]="themeService.mode() === 'dark'" (click)="toggleTheme()" class="relative inline-flex items-center shrink-0 w-12 h-7 rounded-full transition-colors duration-200 cursor-pointer" [class.bg-primary]="themeService.mode() === 'dark'" [class.bg-stroke]="themeService.mode() !== 'dark'">
+        <span class="inline-block w-5 h-5 bg-surface rounded-full shadow-sm transform transition-transform duration-200" [class.translate-x-6]="themeService.mode() === 'dark'" [class.translate-x-1]="themeService.mode() !== 'dark'">
         </span>
       </button>
     </div>
-
     <div class="px-5 py-4">
       <p class="text-sm font-semibold text-heading mb-1">Paleta de color</p>
-      <p class="text-xs text-muted mb-3">Elige la identidad visual de tu cuenta.</p>
-
+      <p class="text-xs text-muted mb-3">Elige la identidad visual de tu cuenta (Todos los dispositivos).</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         @for (option of paletteOptions; track option.key) {
-          <button
-            type="button"
-            (click)="selectPalette(option.key)"
-            class="group relative flex flex-col items-center gap-2 p-3 rounded-xl border transition-all duration-200 cursor-pointer"
-            [class]="themeService.palette() === option.key ? 'border-primary bg-primary-subtle' : 'border-stroke hover:border-primary/40'">
+          <button type="button" (click)="selectPalette(option.key)" class="group relative flex flex-col items-center gap-2 p-3 rounded-xl border transition-all duration-200 cursor-pointer" [class]="themeService.palette() === option.key ? 'border-primary bg-primary-subtle' : 'border-stroke hover:border-primary/40'">
             <span class="w-8 h-8 rounded-full shadow-sm border border-stroke/60" [style.background]="option.swatch"></span>
             <span class="text-xs font-medium text-heading">{{ option.label }}</span>
             @if (themeService.palette() === option.key) {
@@ -55,5 +195,25 @@
       </div>
     </div>
   </div>
-
 </div>
+
+@if (showQrModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" role="presentation" (click)="closeQrModal()">
+    <div class="w-full max-w-sm bg-surface rounded-2xl shadow-lg border border-stroke p-6 flex flex-col items-center gap-5" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title" (click)="$event.stopPropagation()">
+      <div class="w-full flex items-start justify-between gap-4">
+        <div>
+          <h2 id="qr-modal-title" class="text-heading font-semibold text-lg">QR de la página</h2>
+          <p class="text-muted text-sm mt-1">Escanea este código para abrir tu página de agendamiento.</p>
+        </div>
+        <button type="button" (click)="closeQrModal()" aria-label="Cerrar código QR" class="flex items-center justify-center w-9 h-9 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer">
+          <fa-icon [icon]="['fas', 'xmark']" class="text-base"></fa-icon>
+        </button>
+      </div>
+      @if (commerceConfig()?.commercelandingqrcode) {
+        <img [src]="commerceConfig()?.commercelandingqrcode" alt="Código QR de la página de agendamiento" class="w-64 h-64 object-contain rounded-xl border border-stroke p-3 bg-white">
+      } @else {
+        <p class="text-sm text-muted text-center">El código QR todavía no está disponible.</p>
+      }
+    </div>
+  </div>
+}

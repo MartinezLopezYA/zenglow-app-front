@@ -43,3 +43,6 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 .env
+env.ts
+wompi.ts
+d.json
